@@ -6,9 +6,7 @@ from playwright.sync_api import Page, sync_playwright
 
 def login(page: Page, username):
     password = os.getenv("PASSWORD")
-    
-    page.goto("https://cp.pt/en")
-    page.locator("#onetrust-reject-all-handler").click()
+
     page.get_by_role("button", name="myCP profile").click()
     page.locator("#username").fill(username)
     page.locator("#password").fill(password)
@@ -111,6 +109,8 @@ def buy_ticket(page: Page, email):
 
     # Finalize Purchase
     page.get_by_role("button", name="Proceed to Payment").click()
+    # Buys the ticket
+    page.get_by_role("button", name="Confirm").click()
 
 
 

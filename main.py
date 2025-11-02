@@ -135,7 +135,7 @@ def main():
         if login:
             login_user(page, email)
             # Go back to initial page to avoid cp website issues        
-            page.goto("https://cp.pt/en")
+            # page.goto("https://cp.pt/en")
 
         buy_ticket(page, email, login)
 

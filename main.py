@@ -1,10 +1,9 @@
 import re
 import os
-from time import sleep
 from dotenv import load_dotenv
 from playwright.sync_api import Page, sync_playwright
 
-def login(page: Page, username):
+def login_user(page: Page, username):
     password = os.getenv("PASSWORD")
 
     page.get_by_role("button", name="myCP profile").click()
@@ -45,7 +44,7 @@ def separate_passengers(nr_passengers, ids, names, rail_green_passes):
     return passengers
 
 
-def buy_ticket(page: Page, email):
+def buy_ticket(page: Page, email, login):
     nr_passengers = int(os.getenv("NR_PASSENGERS"))
     origin = os.getenv("ORIGIN")
     destination = os.getenv("DESTINATION")
@@ -93,7 +92,9 @@ def buy_ticket(page: Page, email):
 
     page.locator(".checkbox-container").check()
     page.locator(".confirm-button").click()
-    page.locator(".guest-btn").click()
+
+    if not login: # If not logged in, continue as guest
+        page.locator(".guest-btn").click()
 
     # Fill Passenger Information
     page.get_by_role("textbox", name="Email *").fill(email)
@@ -122,6 +123,7 @@ def main():
 
     slow_mo = int(os.getenv("SLOW_MO"))
     headless = os.getenv("HEADLESS", "False").lower() in ('true', '1', 't')
+    login = os.getenv("LOGIN", "False").lower() in ('true', '1', 't')
     
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=headless,  slow_mo=slow_mo)
@@ -130,7 +132,12 @@ def main():
         # Close cookie banner
         page.locator("#onetrust-reject-all-handler").click()
 
-        buy_ticket(page, email)
+        if login:
+            login_user(page, email)
+            # Go back to initial page to avoid cp website issues        
+            page.goto("https://cp.pt/en")
+
+        buy_ticket(page, email, login)
 
         browser.close()
 

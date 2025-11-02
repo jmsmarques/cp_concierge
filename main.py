@@ -57,10 +57,6 @@ def buy_ticket(page: Page, email, login):
     # Separate Passengers Information
     passengers = separate_passengers(nr_passengers, ids, names, rail_green_passes)
 
-
-    page.goto("https://cp.pt/en")
-    
-
     # Set Departure Date
     page.locator('#ida').fill(departure_date)
     # Set Origin

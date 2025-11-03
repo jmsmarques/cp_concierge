@@ -15,7 +15,7 @@ jobs:
       DESTINATION: ${{ vars.ORIGIN }}
       DEPARTURE_DATE: ${{ vars.DEPARTURE_DATE_RETURN }}
       DEPARTURE_TIME: ${{ vars.DEPARTURE_TIME_RETURN }}
-      IDS: ${{ vars.IDS }}
+      IDS: ${{ secrets.IDS }}
       NAMES: ${{ vars.NAMES }}
       RAIL_GREEN_PASSES: ${{ secrets.RAIL_GREEN_PASSES }}
     steps:
@@ -36,7 +36,7 @@ jobs:
           -e DESTINATION="$DESTINATION" \
           -e DEPARTURE_DATE="$DEPARTURE_DATE" \
           -e DEPARTURE_TIME="$DEPARTURE_TIME" \
-          -e IDS="$ID" \
+          -e IDS="$IDS" \
           -e NAMES="$NAMES" \
           -e RAIL_GREEN_PASSES="$RAIL_GREEN_PASSES" \
           ghcr.io/jmsmarques/cp_concierge:latest

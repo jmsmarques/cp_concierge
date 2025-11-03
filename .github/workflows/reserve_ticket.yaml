@@ -38,7 +38,7 @@ jobs:
           -e DESTINATION="$DESTINATION" \
           -e DEPARTURE_DATE="$DEPARTURE_DATE" \
           -e DEPARTURE_TIME="$DEPARTURE_TIME" \
-          -e IDS="$ID" \
+          -e IDS="$IDS" \
           -e NAMES="$NAMES" \
           -e RAIL_GREEN_PASSES="$RAIL_GREEN_PASSES" \
           ghcr.io/jmsmarques/cp_concierge:latest

@@ -1,7 +1,7 @@
 name: Reserve Return Ticket
 on: 
   schedule:
-    - cron: '20 23 * * MON'  # Every Monday at 09:00 UTC (MIN HOUR DAY MONTH DAYOFWEEK)
+    - cron: '25 23 * * MON'  # Every Monday at 09:00 UTC (MIN HOUR DAY MONTH DAYOFWEEK)
   workflow_dispatch:
     inputs:
       environment:

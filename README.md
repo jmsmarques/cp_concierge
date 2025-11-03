@@ -10,6 +10,19 @@ This small automation script drives a Chromium browser to search for a trip on h
 - Support for multiple passengers (IDs, names, Rail Green Pass info)
 - Fills passenger and contact information and proceeds to payment
 
+## Station Codes
+
+- Lisboa Oriente: 94-31039
+- Lisboa Santa Apolonia: 94-30007
+- Coimbra-B: 94-36004
+- Aveiro: 94-3800
+- Santarem: 94-38000
+- Sete Rios: 94-66076
+- Tunes: 94-78006
+- Evora: 94-83006
+- Guarda: 94-49007
+- Mortagua: 94-46243
+
 ## Requirements
 
 - Python 3.8+

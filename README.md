@@ -37,6 +37,14 @@ python -m pip install -r requirements.txt
 python -m playwright install
 ```
 
+4. Create exe
+
+```pwsh
+$env:PLAYWRIGHT_BROWSERS_PATH="0"
+playwright install chromium
+pyinstaller -F main.py
+```
+
 ## Configuration (.env)
 
 Create a `.env` file in the project root with the following variables (example values shown):

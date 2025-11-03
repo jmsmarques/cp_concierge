@@ -6,7 +6,7 @@ from playwright.sync_api import Page, sync_playwright
 def login_user(page: Page, username):
     password = os.getenv("PASSWORD")
 
-    page.get_by_role("button", name="myCP profile").click()
+    # page.get_by_role("button", name="myCP profile").click()
     page.locator("#username").fill(username)
     page.locator("#password").fill(password)
     page.locator("#kc-login").click()
@@ -54,28 +54,15 @@ def buy_ticket(page: Page, email, login):
     names = os.getenv("NAMES")
     rail_green_passes = os.getenv("RAIL_GREEN_PASSES")
 
+    # Santa Apolinia Station Code: 94-30007
+    # Coimbra-B Station Code: 94-36004
+
+    buy_url = f"https://cp.pt/en/resultado-pesquisa?passageiros={nr_passengers}&selectedClass=2&startDate={departure_date}&departureStation={origin}&arrivalStation={destination}"
     # Separate Passengers Information
     passengers = separate_passengers(nr_passengers, ids, names, rail_green_passes)
 
-    # Set Departure Date
-    page.locator('#ida').fill(departure_date)
-    # Set Origin
-    page.get_by_role("textbox", name="From").fill(origin)
-    page.get_by_role("combobox", name=origin).locator("ul").click()
-    # Set Destination
-    page.get_by_role("textbox", name="To").fill(destination)
-    page.get_by_role("combobox", name=destination).locator("ul").click()
-
-    # Select Number of Passengers
-    if nr_passengers > 1:
-        page.get_by_role("button", name="1 passenger(s)").click()
-        for _ in range(nr_passengers - 1):
-            page.get_by_role("button", name="Increase").click()
-
-
-    # Proceed to next screen
-    page.get_by_role("button", name="Search").click()
-
+    page.goto(buy_url)
+    page.locator("#onetrust-reject-all-handler").click()
     # Select Departure Time
     page.locator("div").filter(
         has_text=re.compile(rf"^{departure_time}.*")) \
@@ -88,9 +75,12 @@ def buy_ticket(page: Page, email, login):
 
     page.locator(".checkbox-container").check()
     page.locator(".confirm-button").click()
-
+    
     if not login: # If not logged in, continue as guest
         page.locator(".guest-btn").click()
+    else:
+        page.get_by_role("button", name="Login").click()
+        login_user(page, email)
 
     # Fill Passenger Information
     page.get_by_role("textbox", name="Email *").fill(email)
@@ -107,7 +97,10 @@ def buy_ticket(page: Page, email, login):
     # Finalize Purchase
     page.get_by_role("button", name="Proceed to Payment").click()
     # Buys the ticket
-    page.get_by_role("button", name="Confirm").click()
+    if os.getenv("DRY_RUN", "True").lower() in ('true', '1', 't'):
+        print("Dry run complete. Ticket not purchased.")
+    else:
+        page.get_by_role("button", name="Confirm").click()
 
 
 
@@ -124,14 +117,14 @@ def main():
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=headless,  slow_mo=slow_mo)
         page = browser.new_page()
-        page.goto("https://cp.pt/en")
-        # Close cookie banner
-        page.locator("#onetrust-reject-all-handler").click()
+        # page.goto("https://cp.pt/en")
+        # # Close cookie banner
+        # page.locator("#onetrust-reject-all-handler").click()
 
-        if login:
-            login_user(page, email)
-            # Go back to initial page to avoid cp website issues        
-            # page.goto("https://cp.pt/en")
+        # if login:
+        #     login_user(page, email)
+        #     # Go back to initial page to avoid cp website issues        
+        #     page.goto("https://cp.pt/en")
 
         buy_ticket(page, email, login)
 

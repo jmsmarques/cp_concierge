@@ -1,9 +1,18 @@
 name: Reserve Return Ticket
 on: 
   workflow_dispatch:
+    inputs:
+      environment:
+        type: choice
+        description: Select the environment
+        required: true
+        options:
+          - Trip for 1
+          - Trip for 2
 jobs:
   reserve-ticket:
     runs-on: ubuntu-24.04
+    environment: ${{ github.event.inputs.environment }}
     env:
       LOG_LEVEL: ${{ vars.LOG_LEVEL }}
       LOGIN: ${{ vars.LOGIN }}

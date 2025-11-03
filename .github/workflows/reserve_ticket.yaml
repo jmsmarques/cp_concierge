@@ -19,16 +19,16 @@ jobs:
       NAMES: ${{ vars.NAMES }}
       RAIL_GREEN_PASSES: ${{ secrets.RAIL_GREEN_PASSES }}
     steps:
-      - uses: actions/checkout@v5
-      - name: Set up Python 3.13
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.13.9"
-      - name: Install dependencies
+      - name: Dowload docker
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-      - name: Install Playwright Chromium
-        run: python -m playwright install chromium
-      - name: Run script
-        run: python main.py
+          docker pull ghcr.io/jmsmarques/cp_concierge:latest
+      - name: Run container
+        run: |
+          docker run --rm -it -e DRY_RUN=$DRY_RUN \
+            -e LOGIN=$LOGIN -e SLOW_MO=$SLOW_MO \
+            -e HEADLESS=$HEADLESS -e EMAIL=$EMAIL \
+            -e PASSWORD=$PASSWORD -e ORIGIN=$ORIGIN \
+            -e DESTINATION=$DESTINATION -e DEPARTURE_DATE=$DEPARTURE_DATE \
+            -e DEPARTURE_TIME=$DEPARTURE_TIME -e IDS=$ID -e NAMES=$NAMES \
+            -e RAIL_GREEN_PASSES=$RAIL_GREEN_PASSES \
+            cp_concierge:latest

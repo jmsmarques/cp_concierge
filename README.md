@@ -45,6 +45,11 @@ playwright install chromium
 pyinstaller -F main.py
 ```
 
+5. Run Docker
+```pwsh
+docker run --rm -it -e DRY_RUN=$DRY_RUN -e LOGIN=$LOGIN -e SLOW_MO=$SLOW_MO -e HEADLESS=$HEADLESS -e EMAIL=$EMAIL -e PASSWORD=$PASSWORD -e ORIGIN=$ORIGIN -e DESTINATION=$DESTINATION -e DEPARTURE_DATE=$DEPARTURE_DATE -e DEPARTURE_TIME=$DEPARTURE_TIME -e IDS=$ID -e NAMES=$NAMES -e RAIL_GREEN_PASSES=$RAIL_GREEN_PASSES my-image
+```
+
 ## Configuration (.env)
 
 Create a `.env` file in the project root with the following variables (example values shown):

@@ -36,7 +36,9 @@ def configure_passage(page: Page, passenger):
 def separate_passengers(ids, names, rail_green_passes):
 
     ids = ids.split(",")
+    logger.debug(f"IDs: {ids}")
     names = names.split(",")
+    logger.debug(f"Names: {names}")
     rail_green_passes = rail_green_passes.split(",")
 
     nr_passengers = len(names)

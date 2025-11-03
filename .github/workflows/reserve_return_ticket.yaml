@@ -1,7 +1,7 @@
 name: Reserve Return Ticket
 on: 
   schedule:
-    - cron: '40 23 * * MON'  # Every Monday at 09:00 UTC (MIN HOUR DAY MONTH DAYOFWEEK)
+    - cron: '42 23 * * MON'  # Every Monday at 09:00 UTC (MIN HOUR DAY MONTH DAYOFWEEK)
   workflow_dispatch:
     inputs:
       environment:
@@ -45,6 +45,7 @@ jobs:
             sleep 30
           fi
             done
+      - name: Reserve Return Ticket
         run: |
           docker run --rm \
           -e LOG_LEVEL="DEBUG" \

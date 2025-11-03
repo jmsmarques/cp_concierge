@@ -5,6 +5,7 @@ jobs:
   reserve-ticket:
     runs-on: ubuntu-24.04
     env:
+      LOG_LEVEL: ${{ vars.LOG_LEVEL }}
       LOGIN: ${{ vars.LOGIN }}
       SLOW_MO: ${{ vars.SLOW_MO }}
       HEADLESS: ${{ vars.HEADLESS }}
@@ -24,6 +25,7 @@ jobs:
       - name: Run container
         run: |
           docker run --rm \
+          -e LOG_LEVEL="DEBUG" \
           -e DRY_RUN="$DRY_RUN" \
           -e LOGIN="$LOGIN" \
           -e SLOW_MO="$SLOW_MO" \

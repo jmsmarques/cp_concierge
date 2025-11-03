@@ -19,12 +19,12 @@ jobs:
       NAMES: ${{ vars.NAMES }}
       RAIL_GREEN_PASSES: ${{ secrets.RAIL_GREEN_PASSES }}
     steps:
-      - name: Dowload docker
+      - name: Download docker
         run: |
           docker pull ghcr.io/jmsmarques/cp_concierge:latest
       - name: Run container
         run: |
-          docker run --rm -it -e DRY_RUN=$DRY_RUN \
+          docker run --rm -e DRY_RUN=$DRY_RUN \
             -e LOGIN=$LOGIN -e SLOW_MO=$SLOW_MO \
             -e HEADLESS=$HEADLESS -e EMAIL=$EMAIL \
             -e PASSWORD=$PASSWORD -e ORIGIN=$ORIGIN \

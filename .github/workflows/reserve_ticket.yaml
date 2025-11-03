@@ -1,4 +1,4 @@
-name: reserve-ticket
+name: Reserve Ticket
 on: 
   workflow_dispatch:
 jobs:
@@ -10,7 +10,6 @@ jobs:
       HEADLESS: ${{ vars.HEADLESS }}
       EMAIL: ${{ vars.EMAIL }}
       PASSWORD: ${{ secrets.PASSWORD }}
-      NR_PASSENGERS: ${{ vars.NR_PASSENGERS }}
       ORIGIN: ${{ vars.ORIGIN }}
       DESTINATION: ${{ vars.DESTINATION }}
       DEPARTURE_DATE: ${{ vars.DEPARTURE_DATE }}

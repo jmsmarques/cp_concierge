@@ -66,13 +66,20 @@ def buy_ticket(page: Page, email, login):
     # Coimbra-B Station Code: 94-36004
 
     # Separate Passengers Information
+    logger.info("Separating passenger information")
     passengers, nr_passengers = separate_passengers(ids, names, rail_green_passes)
     buy_url = f"https://cp.pt/en/resultado-pesquisa?passageiros={nr_passengers}&selectedClass=2&startDate={departure_date}&departureStation={origin}&arrivalStation={destination}"
 
-    page.goto(buy_url)
-    # logger.info("Rejecting cookies")
-    # page.locator("#onetrust-reject-all-handler").click()
-    # Select Departure Time
+    try:
+        page.goto(buy_url)
+        if not login:
+            logger.info("Rejecting cookies")
+            page.locator("#onetrust-reject-all-handler").click()
+    except Exception as e:
+        logger.error(f"Error during navigation: {e}")
+
+    
+    logger.info("Selecting departure time %s", departure_time)
     page.locator("div").filter(
         has_text=re.compile(rf"^{departure_time}.*")) \
     .get_by_role("button").click()
@@ -89,9 +96,6 @@ def buy_ticket(page: Page, email, login):
     if not login: # If not logged in, continue as guest
         logger.info("Logging in as guest")
         page.locator(".guest-btn").click()
-    # else:
-    #     page.get_by_role("button", name="Login").click()
-    #     login_user(page, email)
 
     # Fill Passenger Information
     logger.info("Filling passenger information")
@@ -115,10 +119,9 @@ def buy_ticket(page: Page, email, login):
     else:
         logger.info("Buying tickets")
         page.get_by_role("button", name="Confirm").click()
-
-
-
-
+        logger.info("Tickets bought successfully.")
+        from time import sleep
+        sleep(5)
 
 def main():
     load_dotenv()
@@ -131,13 +134,12 @@ def main():
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=headless,  slow_mo=slow_mo)
         page = browser.new_page()
-        logger.info("Going to https://cp.pt/en")
-        page.goto("https://cp.pt/en")
-        # Close cookie banner
-        logger.info("Rejecting cookies")
-        page.locator("#onetrust-reject-all-handler").click()
 
         if login:
+            logger.info("Going to https://cp.pt/en")
+            page.goto("https://cp.pt/en")
+            logger.info("Rejecting cookies")
+            page.locator("#onetrust-reject-all-handler").click()
             login_user(page, email)
 
         buy_ticket(page, email, login)

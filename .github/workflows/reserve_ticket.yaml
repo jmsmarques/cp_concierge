@@ -1,7 +1,7 @@
 name: Reserve Ticket
 on: 
   schedule:
-    - cron: '10 09 * * FRI'  #(MIN HOUR DAY MONTH DAYOFWEEK) UTC time
+    - cron: '18 09 * * WED'  #(MIN HOUR DAY MONTH DAYOFWEEK) UTC time
   workflow_dispatch:
     inputs:
       environment:
@@ -14,7 +14,7 @@ on:
 jobs:
   reserve-ticket:
     runs-on: ubuntu-24.04
-    environment: ${{ github.event.inputs.environment || 'Trip for 2' }}
+    environment: ${{ github.event.inputs.environment || 'Trip for 1' }}
     env:
       LOG_LEVEL: ${{ vars.LOG_LEVEL }}
       LOGIN: ${{ vars.LOGIN }}
